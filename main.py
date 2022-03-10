@@ -1,16 +1,25 @@
-# This is a sample Python script.
+import requests
+from bs4 import BeautifulSoup
 
-# Press Umschalt+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+URL = "https://readmanganato.com/manga-iw985579"
+page = requests.get(URL)
+
+links_manga = []
+name_chapter = []
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Strg+F8 to toggle the breakpoint.
+soup = BeautifulSoup(page.content, "html.parser")
+results = soup.find(id="ResultsContainer")
+results_class = soup.find_all("a", class_="chapter-name text-nowrap")
+
+for result_class in reversed(results_class):
+    link = result_class["href"]
+    name = result_class.text.strip()
+    print(name+":\n")
+    print(link, end="\n" * 2)
+    links_manga.append(link)
+    name_chapter.append(name)
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+for link in links_manga:
+    print(link+"\n")

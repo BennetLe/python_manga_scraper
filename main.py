@@ -18,6 +18,7 @@ file_path = []
 
 def main():
     chapter_name = 0
+    counter = 0
     soup = BeautifulSoup(page.content, "html.parser")
     results = soup.find(id="ResultsContainer")
     results_class = soup.find_all("a", class_="chapter-name text-nowrap")
@@ -35,6 +36,7 @@ def main():
     # print(link + "\n")
 
     for link in links_manga:
+        counter += 1
         chapter = requests.get(link)
         chapter_soup = BeautifulSoup(chapter.content, "html.parser")
         chapter_results = chapter_soup.find_all("img")
@@ -51,6 +53,7 @@ def main():
             else:
                 filename = "BackButton"
 
+            filename = filename.replace("’", "").replace(":", "").replace("-", " ")
             file = open(f"{filename}.png", "wb")
             print(filename)
             file.write(picture.content)
@@ -67,7 +70,7 @@ def main():
         chapter_name += 1
 
         for i in range(0, len(images)):
-            if images[i].mode == 'RGBA':
+            if images[i].mode != 'RGB':
                 images[i] = images[i].convert('RGB')
 
         pdf_path = f"/Users/benne/Pictures/Manga_PDF/Chapter_{chapter_name}.pdf"

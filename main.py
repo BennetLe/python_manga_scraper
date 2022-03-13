@@ -19,8 +19,9 @@ file_path = []
 def main():
     chapter_name = 0
     counter = 0
+    counter_name = 0
     soup = BeautifulSoup(page.content, "html.parser")
-    results = soup.find(id="ResultsContainer")
+    # results = soup.find(id="ResultsContainer")
     results_class = soup.find_all("a", class_="chapter-name text-nowrap")
 
     for result_class in reversed(results_class):
@@ -48,12 +49,13 @@ def main():
             s.headers.update({"referer": "https://readmanganato.com/"})
             picture = s.get(chapter_picture, verify=False)
 
+            counter_name += 1
             if chapter.has_attr("alt"):
-                filename = chapter["alt"]
+                filename = ""+str(counter_name)
             else:
                 filename = "BackButton"
 
-            filename = filename.replace("’", "").replace(":", "").replace("-", " ")
+            # filename = filename.replace("’", "").replace(":", "").replace("-", " ")
             file = open(f"{filename}.png", "wb")
             print(filename)
             file.write(picture.content)

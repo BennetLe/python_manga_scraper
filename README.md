@@ -1,5 +1,4 @@
 # python_manga_scraper
-_v 0.2_
 
 ## Requirements
 * BeautifulSoup(bs4)

@@ -1,6 +1,6 @@
 import glob
 import os
-
+import re
 import requests
 from bs4 import BeautifulSoup
 from PIL import Image
@@ -14,6 +14,14 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 links_manga = []
 name_chapter = []
 file_path = []
+
+
+def atoi(text):
+    return int(text) if text.isdigit() else text
+
+
+def natural_keys(text):
+    return [atoi(c) for c in re.split(r'(\d+)', text)]
 
 
 def get(URL, path):
@@ -51,7 +59,7 @@ def get(URL, path):
             # inc the counter for the img name
             counter_name += 1
             if chapter.has_attr("alt"):
-                filename = ""+str(counter_name)
+                filename = "" + str(counter_name)
             else:
                 filename = "BackButton"
 
@@ -69,6 +77,7 @@ def get(URL, path):
             file_path.append(file)
 
         # add content of file_path to images
+        file_path.sort(key=natural_keys)
         images = [
             Image.open(f)
             for f in file_path
@@ -82,7 +91,7 @@ def get(URL, path):
                 images[i] = images[i].convert('RGB')
 
         # set a save location and a filename for the PDF
-        pdf_path = os.path.join(path, manga_name + "_"+str(chapter_name)+".pdf")
+        pdf_path = os.path.join(path, manga_name + "_" + str(chapter_name) + ".pdf")
 
         # convert all the images to a PDF
         images[0].save(

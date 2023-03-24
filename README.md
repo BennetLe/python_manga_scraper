@@ -16,7 +16,7 @@ _pip install -r requirements.txt_
 
 ## Planed Features
 * GUI
-  * Select a path to save to
+  * Select a path to save to 🗸
   * Progress Bar
   * Get a specific chapter
   * Get specific chapters
